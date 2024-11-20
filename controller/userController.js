@@ -141,7 +141,7 @@ export function loginuser(req, res) {
                         email: user.email,
                     };
 
-                    const token = jwt.sign(payload, "secretkey", { expiresIn: "1h" });
+                    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "1h" });
 
                     res.json({
                         message: "User logged in successfully",

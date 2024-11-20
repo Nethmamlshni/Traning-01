@@ -4,8 +4,8 @@ import userRouter from "./router/userRouter.js";
 import galleryRouter from "./router/gallerRouter.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 
 app.use(bodyParser.json());
@@ -13,11 +13,12 @@ app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
 
 
-const connect ="mongodb+srv://nethmamalshani2002:1234_T01@cluster0.ldshf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connect = process.env.MONGO_URL;
+
 app.use((req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
-        jwt.verify(token, "secretkey", (err, decoded) => {
+        jwt.verify(token, process.env.JWT_Key, (err, decoded) => {
             if (err) {
                 res.status(401).json({ message: "Unauthorized" });
             } else {
