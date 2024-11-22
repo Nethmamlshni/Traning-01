@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import userRouter from "./router/userRouter.js";
 import galleryRouter from "./router/gallerRouter.js";
+import categoryRouter from "./router/categoryRouter.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -11,6 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
+app.use("/api/category", categoryRouter);
 
 
 const connect = process.env.MONGO_URL;
