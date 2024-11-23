@@ -50,51 +50,36 @@ export function createCategory(req, res) {
 }
 
 
-    
-    // Delete category function
-    export function deleteCategory(req, res) {
-        const authenticate = (req, res, next) => {
-            const token = req.header('Authorization')?.replace('Bearer ', '');
-        
-            if (!token) {
-                return res.status(401).json({ message: 'Access denied. No token provided.' });
-            }
-        
-            try {
-                const decoded = jwt.verify(token, process.env.JWT_KEY);  // Use your JWT secret key here
-                req.user = decoded;  // Add the decoded user information to the request object
-                next();  // Proceed to the next middleware
-            } catch (err) {
-                return res.status(400).json({ message: 'Invalid token' });
-            }
-        };
-        
-        // Middleware to check if the user is an admin
-        const checkAdmin = (req, res, next) => {
-            if (req.user.type !== 'admin') {
-                return res.status(403).json({ message: 'You do not have permission to delete categories.' });
-            }
-            next();  // Proceed if user is an admin
-        };
-        
-        const { categoryId } = req.params;
-    
-        // Find and delete the category
-        catageriesModel.findByIdAndDelete(categoryId)
-            .then((category) => {
-                if (!category) {
-                    return res.status(404).json({ message: 'Category not found' });
-                }
-                // If category is deleted successfully
-                console.log("Your request has been received");
-                return res.json({
-                    message: "Category deleted successfully"
-                });
-            })
-            .catch((err) => {
-                res.status(500).json({ message: 'Error deleting category', error: err.message });
+export function deleteCategory(req, res) {
+    const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
+        // Check if the user has the 'admin' type
+        if (decoded.type !== "admin") {
+            return res.status(403).json({
+                message: "You are not allowed to create categories."
             });
         }
+    const { name } = req.params;
+   
+    if (!name) {
+        return res.status(400).json({ message: 'Category name is required' });
+    }
+
+    // Find and delete the category by name
+    catageriesModel.findOneAndDelete({ name })
+        .then((category) => {
+            if (!category) {
+                return res.status(404).json({ message: 'Category not found' });
+            }
+            res.json({
+                message: `Category '${name}' deleted successfully`,
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({ message: 'Error deleting category', error: err.message });
+        });
+    } 
+
+
         export function showCategories(req, res) {
             catageriesModel.find()
                 .then((categories) => {
@@ -110,3 +95,36 @@ export function createCategory(req, res) {
                     res.status(500).json({ message: 'Error retrieving categories', error: err.message });
                 });
         }
+
+export function updateCategory(req, res) {
+    // Verify token and check user type
+    const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
+
+    if (decoded.type !== "admin") {
+        return res.status(403).json({
+            message: "You are not allowed to update categories."
+        });
+    }
+
+    const { name } = req.params;
+    const updates = req.body;
+
+    if (!name) {
+        return res.status(400).json({ message: 'Category name is required' });
+    }
+
+    // Find and update the category by name
+    catageriesModel.findOneAndUpdate({ name }, updates, { new: true })
+        .then((category) => {
+            if (!category) {
+                return res.status(404).json({ message: 'Category not found' });
+            }
+            res.json({
+                message: `Category '${name}' updated successfully`,
+                updatedCategory: category,
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({ message: 'Error updating category', error: err.message });
+        });
+}

@@ -3,16 +3,19 @@ import express from "express";
 import userRouter from "./router/userRouter.js";
 import galleryRouter from "./router/gallerRouter.js";
 import categoryRouter from "./router/categoryRouter.js";
+import hotelRoomRouter from "./router/hotelRoomRoutes.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
-const app = express();
 
+const app = express();
 app.use(bodyParser.json());
 app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/hotelRoom", hotelRoomRouter);
+
 
 
 const connect = process.env.MONGO_URL;
