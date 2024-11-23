@@ -4,6 +4,7 @@ import userRouter from "./router/userRouter.js";
 import galleryRouter from "./router/gallerRouter.js";
 import categoryRouter from "./router/categoryRouter.js";
 import hotelRoomRouter from "./router/hotelRoomRoutes.js";
+import hotelBookingRoutes from "./router/hotelBookingRoutes.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -15,6 +16,7 @@ app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/hotelRoom", hotelRoomRouter);
+app.use ("/api/hotelBooking", hotelBookingRoutes);
 
 
 
