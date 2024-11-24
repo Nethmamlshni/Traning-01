@@ -1,5 +1,5 @@
 import express from "express";
-import { createBooking, getAllBookings, getBookingById, cancelBooking } from "../controller/hotelBookingController.js";
+import { createBooking, getAllBookings,  getBookingByRoomNumber, cancelBookingByRoomNumber } from "../controller/hotelBookingController.js";
 
 const router = express.Router();
 
@@ -10,9 +10,11 @@ router.post("/", createBooking);
 router.get("/", getAllBookings);
 
 // Get a booking by ID
-router.get("/:id", getBookingById);
+router.get("/:roomNumber",  getBookingByRoomNumber);
 
 // Cancel a booking
-router.put("/:id/cancel", cancelBooking);
+router.put("/:roomNumber/cancel", cancelBookingByRoomNumber);
+
+
 
 export default router;
