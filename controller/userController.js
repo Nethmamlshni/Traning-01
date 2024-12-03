@@ -74,5 +74,4 @@ export function loginuser(req, res) {
             console.error("Login error:", err); // Debugging info
             res.status(500).json({ message: "Error finding user", error: err.message });
         });
-}
-
+    }

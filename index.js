@@ -9,8 +9,10 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
