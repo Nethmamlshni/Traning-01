@@ -49,7 +49,6 @@ export function createCategory(req, res) {
     }
 }
 
-
 export function deleteCategory(req, res) {
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
         // Check if the user has the 'admin' type
@@ -79,22 +78,21 @@ export function deleteCategory(req, res) {
         });
     } 
 
-
-        export function showCategories(req, res) {
-            catageriesModel.find()
-                .then((categories) => {
-                    if (categories.length === 0) {
-                        return res.status(404).json({ message: 'No categories found' });
-                    }
-                    res.json({
-                        message: 'Categories retrieved successfully',
-                        categories,
-                    });
-                })
-                .catch((err) => {
-                    res.status(500).json({ message: 'Error retrieving categories', error: err.message });
-                });
+    export async function showCategories(req, res) {
+        try {
+          // Fetch all categories from the database
+          const categories = await catageriesModel.find();
+      
+          // Send the categories as a JSON response
+          res.status(200).json(categories);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+      
+          // Send a 500 error response if something goes wrong
+          res.status(500).json({ message: "Error fetching categories" });
         }
+      }
+      
 
 export function updateCategory(req, res) {
     // Verify token and check user type
@@ -128,3 +126,4 @@ export function updateCategory(req, res) {
             res.status(500).json({ message: 'Error updating category', error: err.message });
         });
 }
+

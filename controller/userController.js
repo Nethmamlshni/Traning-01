@@ -4,20 +4,41 @@ import bodyParser from "body-parser";
 import userModel from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import axios from "axios";
 
 
 userController.use(bodyParser.json());
 export function getUser(req, res) {
-    userModel.find().then((users) => {
-        res.json({
-            users
-        })
-    }).catch((err) => {
-        res.json({
-            message: err
-        })
-    })
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).json({ message: "Authorization header missing" });
+    }
+
+    const token = authHeader.split(" ")[1]; // Extract the token
+    if (!token) {
+        return res.status(401).json({ message: "Token missing in Authorization header" });
+    }
+
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+        if (err) {
+            console.error("Token verification error:", err);
+            return res.status(403).json({ message: "Invalid token" });
+        }
+
+        userModel.findById(decoded.id) // Replace `decoded.id` with your payload structure
+            .then((user) => {
+                if (!user) {
+                    return res.status(404).json({ message: "User not found" });
+                }
+                res.json({ user: { name: user.name, img: user.img } });
+            })
+            .catch((err) => {
+                console.error("Database error fetching user:", err);
+                res.status(500).json({ message: "Internal server error" });
+            });
+    });
 }
+
 
 
 export function postUser(req, res) {

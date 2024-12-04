@@ -12,7 +12,11 @@ dotenv.config();
 import cors from "cors";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5173", // Frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+}));
 app.use(bodyParser.json());
 app.use ("/api/user", userRouter);
 app.use ("/api/gallery", galleryRouter);
@@ -49,3 +53,5 @@ mongoose.connect(connect).then(() => {
 app.listen(3000, (req, res) => {
     console.log("Server is running on port 3000");
 });
+
+
