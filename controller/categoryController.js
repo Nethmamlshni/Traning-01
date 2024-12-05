@@ -76,7 +76,8 @@ export function deleteCategory(req, res) {
         .catch((err) => {
             res.status(500).json({ message: 'Error deleting category', error: err.message });
         });
-    } 
+    }
+          
 
     export async function showCategories(req, res) {
         try {

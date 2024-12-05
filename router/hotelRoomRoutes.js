@@ -1,5 +1,5 @@
 import express from "express";
-import {createRoom,getRooms,getRoomByNumber,updateRoom,deleteRoom,} from "../controller/hotelRoomController.js";
+import {createRoom,updateRoom,showRooms,deleteRoom,} from "../controller/hotelRoomController.js";
 
 const hotelRoomRouter = express.Router();
 
@@ -7,10 +7,11 @@ const hotelRoomRouter = express.Router();
 hotelRoomRouter.post("/", createRoom);
 
 // Get all hotel rooms
-hotelRoomRouter.get("/", getRooms);
+hotelRoomRouter.get("/", showRooms);
+/*hotelRoomRouter.get("/", getRooms);
 
 // Get a hotel room by room number
-hotelRoomRouter.get("/:roomNumber", getRoomByNumber);
+hotelRoomRouter.get("/:roomNumber", getRoomByNumber);*/
 
 // Update a hotel room by room number
 hotelRoomRouter.put("/:roomNumber", updateRoom);

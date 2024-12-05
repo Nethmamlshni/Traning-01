@@ -29,7 +29,7 @@ export const createRoom = (req, res) => {
 };
 
 // Get all hotel rooms
-export const getRooms = (req, res) => {
+/*export const getRooms = (req, res) => {
     hotelRoomModel.find()
         .then((rooms) => {
             res.json(rooms);
@@ -59,7 +59,7 @@ export const getRoomByNumber = (req, res) => {
                 error: err.message,
             });
         });
-};
+};*/
 
 // Update a hotel room by room number
 export const updateRoom = (req, res) => {
@@ -119,3 +119,16 @@ export const deleteRoom = (req, res) => {
             });
         });
 };
+
+
+// Function to fetch all rooms
+export async function showRooms(req, res) {
+    try {
+      const rooms = await hotelRoomModel.find();
+      res.status(200).json(rooms);
+    } catch (error) {
+      console.error("Error fetching rooms:", error);
+      res.status(500).json({ message: "Error fetching rooms" });
+    }
+  }
+
