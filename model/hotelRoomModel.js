@@ -15,7 +15,7 @@ const hotelRoomSchema = new mongoose.Schema({
         required: true
     },
     isAvailable: {
-        type: Boolean,
+        type: String,
         default: true
     },
     features: {

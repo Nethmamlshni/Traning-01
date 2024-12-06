@@ -12,4 +12,4 @@ categoryRouter.get("/", showCategories);
 
 
 
-export default categoryRouter;
+export default categoryRouter; 

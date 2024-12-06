@@ -18,7 +18,7 @@ export function createCategory(req, res) {
         const decoded = jwt.verify(token, process.env.JWT_KEY); // Replace JWT_KEY with your secret key
        
         // Check if the user has the 'admin' type
-        if (decoded.type !== "admin") {
+        if (decoded.type == "admin") {
             return res.status(403).json({
                 message: "You are not allowed to create categories."
             });
@@ -51,8 +51,9 @@ export function createCategory(req, res) {
 
 export function deleteCategory(req, res) {
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
+          
         // Check if the user has the 'admin' type
-        if (decoded.type !== "admin") {
+        if (decoded.type == "admin") {
             return res.status(403).json({
                 message: "You are not allowed to create categories."
             });
@@ -99,7 +100,7 @@ export function updateCategory(req, res) {
     // Verify token and check user type
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
 
-    if (decoded.type !== "admin") {
+    if (decoded.type == "admin") {
         return res.status(403).json({
             message: "You are not allowed to update categories."
         });
