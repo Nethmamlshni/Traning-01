@@ -17,6 +17,7 @@ const feedbackSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+
 });
 
 const Feedback = mongoose.model("Feedback", feedbackSchema);

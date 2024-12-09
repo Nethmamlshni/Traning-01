@@ -1,4 +1,6 @@
-import Feedback from "../model/feedback.js";  // Assuming the model is here
+import Feedback from "../model/feedback.js"; 
+import jwt from "jsonwebtoken";
+import axios from "axios"; // Assuming the model is here
 
 // Client submits feedback
 export const submitFeedback = async (req, res) => {
@@ -26,31 +28,53 @@ export const getFeedbacks = async (req, res) => {
     }
 };
 
-// Admin approves feedback
-export const approveFeedback = (id) => {
-    
-    const token = localStorage.getItem("token");
-    if (!token) {
-        alert("You need to log in again.");
-        return;
-    }
+// Admin approves feedbac
 
-    axios
-        .put(`${import.meta.env.VITE_API_URL}api/feedback/${id}`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then(() => {
-            alert("Feedback approved!");
-            setFeedbacks(feedbacks.filter((feedback) => feedback._id !== id));
-        })
-        .catch((err) => {
-            console.error("Error approving feedback:", err);
-            if (err.response?.status === 401) {
-                alert("Unauthorized! Please log in again.");
-            } else {
-                alert("An error occurred while approving the feedback.");
-            }
-        });
+
+
+export const approveFeedback = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Verify the admin token
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: "Authorization token required." });
+        }
+
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+        // Ensure only admins can approve feedback
+        if (decoded.type == "admin") {
+            return res.status(403).json({ message: "Only admins can approve feedback." });
+        }
+
+        // Mark feedback as approved
+        const feedback = await Feedback.findByIdAndUpdate(
+            id,
+            { approved: true },
+            { new: true }
+        );
+
+        if (!feedback) {
+            return res.status(404).json({ message: "Feedback not found." });
+        }
+
+        res.status(200).json({ message: "Feedback approved successfully.", feedback });
+    } catch (error) {
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({ message: "Token expired. Please log in again." });
+        }
+        res.status(500).json({ message: "Error approving feedback.", error: error.message });
+    }
+};
+
+export const getApprovedFeedbacks = async (req, res) => {
+    try {
+        const feedbacks = await Feedback.find({ approved: true }); // Fetch only approved feedback
+        res.status(200).json(feedbacks);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching approved feedback.", error: error.message });
+    }
 };
