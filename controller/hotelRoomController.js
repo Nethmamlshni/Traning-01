@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export const createRoom = (req, res) => {
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
     // Check if the user has the 'admin' type
-        if (decoded.type == "admin") {
+        if (decoded.type !== "admin") {
             return res.status(403).json({
                 message: "You are not allowed to create categories."
             });
@@ -32,7 +32,7 @@ export const createRoom = (req, res) => {
 export const updateRoom = (req, res) => {
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
     // Check if the user has the 'admin' type
-    if (decoded.type == "admin") {
+    if (decoded.type !== "admin") {
         return res.status(403).json({
             message: "You are not allowed to create categories."
         });
@@ -62,7 +62,7 @@ export const updateRoom = (req, res) => {
 export const deleteRoom = (req, res) => {
     const decoded = jwt.verify(req.headers.authorization.split(" ")[1], process.env.JWT_KEY);
     // Check if the user has the 'admin' type
-    if (decoded.type == "admin") {
+    if (decoded.type !== "admin") {
         return res.status(403).json({
             message: "You are not allowed to create categories."
         }); 

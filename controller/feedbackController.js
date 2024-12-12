@@ -17,7 +17,6 @@ export const submitFeedback = async (req, res) => {
         res.status(500).json({ message: "Error submitting feedback", error: error.message });
     }
 };
-
 // Admin fetches all feedback
 export const getFeedbacks = async (req, res) => {
     try {
@@ -46,7 +45,7 @@ export const approveFeedback = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_KEY);
 
         // Ensure only admins can approve feedback
-        if (decoded.type == "admin") {
+        if (decoded.type !== "admin") {
             return res.status(403).json({ message: "Only admins can approve feedback." });
         }
 

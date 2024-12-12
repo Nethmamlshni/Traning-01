@@ -5,7 +5,7 @@ import userModel from "../model/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import axios from "axios";
-
+import nodemailer from "nodemailer";
 
 userController.use(bodyParser.json());
 export function getUser(req, res) {
@@ -96,3 +96,54 @@ export function loginuser(req, res) {
             res.status(500).json({ message: "Error finding user", error: err.message });
         });
     }
+
+    export  function FogotPassword  (req, res) {
+        const { email } = req.body;
+        if (!email) {
+          return res.status(400).json({ message: 'Email is required' });
+        }
+        
+        // Validate user and send email
+        const user =  User.findOne({ email });
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+      
+        const resetToken = generateResetToken(); // Implement token generation
+        const resetLink = `https://your-frontend-url.com/reset-password/${resetToken}`;
+      
+        try {
+          transporter.sendMail({
+            from: '"Your App" <no-reply@yourapp.com>',
+            to: email,
+            subject: 'Password Reset',
+            text: `Click the link to reset your password: ${resetLink}`,
+          });
+          res.json({ message: 'Password reset email sent' });
+        } catch (error) {
+          console.error('Error sending email:', error);
+          res.status(500).json({ message: 'Error sending email' });
+        }
+      };
+      
+      
+      export  function resetPassword (req, res) {
+        const { token, password } = req.body;
+      
+        if (!token || !password) {
+          return res.status(400).json({ message: "Token and password are required" });
+        }
+      
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_KEY);
+          const hashedPassword =  bcrypt.hash(password, 10);
+      
+           userModel.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+      
+          res.json({ message: "Password reset successfully" });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ message: "Error resetting password" });
+        }
+      };
+      
