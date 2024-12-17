@@ -8,7 +8,6 @@ export function createCategory(req, res) {
         if (!authHeader) {
             return res.status(401).json({ message: "No token provided, authorization denied." });
         }
-
         const token = authHeader.split(" ")[1]; // Assume format is "Bearer <token>"
         if (!token) {
             return res.status(401).json({ message: "Token is missing, authorization denied." });
