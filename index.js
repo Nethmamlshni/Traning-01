@@ -39,7 +39,6 @@ app.use((req, res, next) => {
                 res.status(401).json({ message: "Unauthorized" });
             } else {
                 req.user = decoded;
-                console.log(decoded);
                 next();
             }
         });
