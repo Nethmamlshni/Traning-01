@@ -1,6 +1,6 @@
-
 import jwt from "jsonwebtoken";
 import galleryModel from "../model/gallerItem.js";
+import axios from "axios";
 
 export function createGallery(req, res) {
     try {
@@ -87,15 +87,10 @@ export function deleteGallery(req, res) {
 
 export async function showGalleries(req, res) {
     try {
-        // Fetch all gallery items from the database
         const galleries = await galleryModel.find();
-
-        // Send the gallery items as a JSON response
         res.status(200).json(galleries);
     } catch (error) {
         console.error("Error fetching galleries:", error);
-
-        // Send a 500 error response if something goes wrong
         res.status(500).json({ message: "Error fetching galleries" });
     }
 }
@@ -120,7 +115,7 @@ export function updateGallery(req, res) {
         // Find and update the gallery item by name
         galleryModel.findOneAndUpdate({ name }, updates, { new: true })
             .then((updatedGallery) => {
-                if (!updatedGallery) {
+                if (!updatedGallery) { 
                     return res.status(404).json({ message: 'Gallery item not found' });
                 }
                 res.json({

@@ -26,6 +26,10 @@ const hotelRoomSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    image: {
+        type: String,
+        required: true
+    }
 });
 
 const hotelRoomModel = mongoose.model("HotelRoom", hotelRoomSchema);

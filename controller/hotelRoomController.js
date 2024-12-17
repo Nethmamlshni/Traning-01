@@ -49,7 +49,7 @@ export const updateRoom = (req, res) => {
                 message: "Hotel room updated successfully",
                 updatedRoom,
             });
-        })
+        }) 
         .catch((err) => {
             res.status(500).json({
                 message: "Error updating hotel room",
@@ -90,7 +90,6 @@ export const deleteRoom = (req, res) => {
 
 // Function to fetch all rooms
 export async function showRooms(req, res) {
-    console.log(req);
     try {
       const rooms = await hotelRoomModel.find();
       res.status(200).json(rooms);

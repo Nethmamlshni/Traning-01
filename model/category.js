@@ -23,7 +23,7 @@ const catageriesSchema = new mongoose.Schema({
     },
     feacuters: [
         {
-            type:Array,
+            type: String,
             required: true
         }
     ]
