@@ -29,7 +29,11 @@ const hotelRoomSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
-    }
+    },
+    category: {
+        type: String,
+        required: true
+    },  
 });
 
 const hotelRoomModel = mongoose.model("HotelRoom", hotelRoomSchema);
