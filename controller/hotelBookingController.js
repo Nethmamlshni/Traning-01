@@ -79,9 +79,19 @@ export function getAllBookings(req, res) {
             select: "roomNumber type price",
         }) // Include room details
         .populate("userId", "name email") // Include user details
-        .then((bookings) => res.json(bookings))
-        .catch((err) => res.status(500).json({ message: "Error fetching bookings", error: err.message }));
+        .then((bookings) => {
+            res.json(bookings); // Send response with bookings
+        })
+        .catch((err) => {
+            console.error("Error fetching bookings:", err); // Log the detailed error
+            res.status(500).json({ 
+                message: "Error fetching bookings", 
+                error: err.message,
+                stack: err.stack // Optional: Include stack trace for debugging
+            });
+        });
 }
+
 
 // Get a specific booking by roomNumber
 export function getBookingByRoomNumber(req, res) {

@@ -8,7 +8,9 @@ const hotelBookingSchema = new mongoose.Schema({
     status: { type: String, default: "Pending", enum: ["Pending", "Confirmed", "Cancelled"] },
     createdAt: { type: Date, default: Date.now },
     notes: { type: String },
-    time: { type: Date, default: Date.now }
+    time: { type: Date, default: Date.now },
+    category: { type: String, required: true },
+    roomType: { type: String, required: true },
 });
 
 const hotelBookingModel = mongoose.model("HotelBooking", hotelBookingSchema);
