@@ -27,7 +27,6 @@ app.use ("/api/hotelBooking", hotelBookingRoutes);
 app.use("/api/feedback", feedbackRouter);
 
 
-
 const connect = process.env.MONGO_URL;
 
 app.use((req, res, next) => {
