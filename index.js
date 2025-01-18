@@ -14,7 +14,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-    origin: 'https://sarahotel.vercel.app/', // Frontend URL
+    origin: 'https://sarahotel.vercel.app', // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
 }));
@@ -25,7 +25,6 @@ app.use("/api/category", categoryRouter);
 app.use("/api/hotelRoom", hotelRoomRouter);
 app.use ("/api/hotelBooking", hotelBookingRoutes);
 app.use("/api/feedback", feedbackRouter);
-
 
 const connect = process.env.MONGO_URL;
 
