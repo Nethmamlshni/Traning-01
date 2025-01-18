@@ -14,7 +14,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-    origin: 'https://sarahotel.vercel.app', // Frontend URL
+    origin: 'https://sarahotel.vercel.app/', // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Authorization", "Content-Type"],
 }));
