@@ -25,24 +25,29 @@ app.use("/api/category", categoryRouter);
 app.use("/api/hotelRoom", hotelRoomRouter);
 app.use ("/api/hotelBooking", hotelBookingRoutes);
 app.use("/api/feedback", feedbackRouter);
-
 const connect = process.env.MONGO_URL;
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+});
 
 app.use((req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
         jwt.verify(token, process.env.JWT_Key, (err, decoded) => {
             if (err) {
-                res.status(401).json({ message: "Unauthorized" });
+                res.status(401).json({ message: " Invalid token" });
             } else {
                 req.user = decoded;
                 next();
             }
         });
     } else {
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ message: "Authorization header missing" });
     }
-})
+});
 mongoose.connect(connect).then(() => {
     console.log("Database connected successfully"); 
    
