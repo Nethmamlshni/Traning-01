@@ -24,7 +24,7 @@ export function createGallery(req, res) {
                 message: "You are not authorized to create a gallery."
             });
         }
-
+        
         // Proceed to create gallery item
         const galleryData = req.body;
         const newGallery = new galleryModel(galleryData);

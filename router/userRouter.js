@@ -12,5 +12,4 @@ userRouter.post("/forgotpassword", FogotPassword);
 
 
 
-
 export default userRouter;
